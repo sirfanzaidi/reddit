@@ -1,11 +1,12 @@
-import * as React from "react"
-import { FlameIcon, HomeIcon, Minus, Plus, TrendingUpIcon } from "lucide-react"
-import { SearchForm } from "@/components/search-form"
+import * as React from "react";
+import { FlameIcon, HomeIcon, Minus, Plus, TrendingUpIcon } from "lucide-react";
+
+import { SearchForm } from "@/components/search-form";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
@@ -18,13 +19,12 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import Link from "next/link"
-import Image from "next/image"
-import ReddishLogo from "../images/Reddish Full.png"
-import { getSubreddits } from "@/sanity/lib/subreddit/getSubreddits"
-import CreateCommunityButton from "./header/CreateCommunityButton"
-
+} from "@/components/ui/sidebar";
+import Image from "next/image";
+import ReddishLogo from "@/images/Reddish Full.png";
+import Link from "next/link";
+import { getSubreddits } from "@/sanity/lib/subreddit/getSubreddits";
+import CreateCommunityButton from "./header/CreateCommunityButton";
 
 type SidebarData = {
   navMain: {
@@ -34,38 +34,47 @@ type SidebarData = {
       title: string;
       url: string;
       isActive: boolean;
-    }
-  }
-}
-
-
-export async function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-// TODO get all sureddits from sanity
-const subreddits = await getSubreddits();
-// This is sample data.
-const sidebarData =  {
-  navMain: [
-    {
-      title: "Communities",
-      url: "#",
-      items:
-      subreddits?.map((subreddit) => ({
-        title: subreddit.title,
-        url: `/community/${subreddit.slug}`,
-        isActive: false,
-      })) || [],
-    },
-     ],
+    }[];
+  }[];
 };
+
+export async function AppSidebar({
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  // TODO: get all subreddits from sanity
+  const subreddits = await getSubreddits();
+
+  // This is sample data.
+  const sidebarData: SidebarData = {
+    navMain: [
+      {
+        title: "Communities",
+        url: "#",
+        items:
+          subreddits?.map((subreddit) => ({
+            title: subreddit.title || "unknown",
+            url: `/community/${subreddit.slug}`,
+            isActive: false,
+          })) || [],
+      },
+    ],
+  };
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-             <Link href="/">
-             <Image src={ReddishLogo} alt="logo" width={150} height={150} className="object-contain"/>
-             </Link>
+              <Link href="/">
+                <Image
+                  src={ReddishLogo}
+                  alt="logo"
+                  width={150}
+                  height={150}
+                  className="object-contain"
+                />
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -76,34 +85,32 @@ const sidebarData =  {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-              <CreateCommunityButton />
+                <CreateCommunityButton />
               </SidebarMenuButton>
 
               <SidebarMenuButton asChild className="p-5">
                 <Link href="/">
-                <HomeIcon className="w-4 h-4 mr-2" />
-                Home
-                </Link>
-              </SidebarMenuButton>
-              <SidebarMenuButton asChild className="p-5">
-                <Link href="/">
-                <TrendingUpIcon className="w-4 h-4 mr-2" />
-                Popular
-                </Link>
-              </SidebarMenuButton>
-              <SidebarMenuButton asChild className="p-5">
-                <Link href="/">
-                <FlameIcon className="w-4 h-4 mr-2" />
-                Hot/Controversial
+                  <HomeIcon className="w-4 h-4 mr-2" />
+                  Home
                 </Link>
               </SidebarMenuButton>
 
-            
+              <SidebarMenuButton asChild className="p-5">
+                <Link href="/popular">
+                  <TrendingUpIcon className="w-4 h-4 mr-2" />
+                  Popular
+                </Link>
+              </SidebarMenuButton>
+              <SidebarMenuButton asChild className="p-5">
+                <Link href="/hot">
+                  <FlameIcon className="w-4 h-4 mr-2" />
+                  Hot/Controversial
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
-       </SidebarGroup>
-        
-        
+        </SidebarGroup>
+
         <SidebarGroup>
           <SidebarMenu>
             {sidebarData.navMain.map((item, index) => (
@@ -144,5 +151,5 @@ const sidebarData =  {
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
