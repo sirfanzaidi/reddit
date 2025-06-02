@@ -1,6 +1,5 @@
 import * as React from "react"
 import { FlameIcon, HomeIcon, Minus, Plus, TrendingUpIcon } from "lucide-react"
-
 import { SearchForm } from "@/components/search-form"
 import {
   Collapsible,
@@ -24,7 +23,6 @@ import Link from "next/link"
 import Image from "next/image"
 import ReddishLogo from "../images/Reddish Full.png"
 import { getSubreddits } from "@/sanity/lib/subreddit/getSubreddits"
-import { url } from "inspector"
 import CreateCommunityButton from "./header/CreateCommunityButton"
 
 
